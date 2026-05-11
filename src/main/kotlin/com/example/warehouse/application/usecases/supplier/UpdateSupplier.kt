@@ -2,6 +2,7 @@ package com.example.warehouse.application.usecases.supplier
 
 import com.example.warehouse.application.dto.supplier.SupplierDto
 import com.example.warehouse.application.dto.supplier.UpdateSupplierRequest
+import com.example.warehouse.application.ports.SupplierRepositoryPort
 import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.SupplierRepository
 import jakarta.validation.Valid
@@ -10,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class UpdateSupplier(
-    private val supplierRepository: SupplierRepository
+    private val supplierRepository: SupplierRepositoryPort
 ) {
 
     fun execute(id: Long, @Valid @RequestBody request: UpdateSupplierRequest): SupplierDto {
         val supplier = supplierRepository.findById(id)
-            .orElseThrow { NotFoundException("Supplier not found") }
+            ?: throw NotFoundException("Supplier not found")
 
         supplier.name = request.name
 

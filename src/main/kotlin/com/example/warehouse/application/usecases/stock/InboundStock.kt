@@ -1,12 +1,18 @@
 package com.example.warehouse.application.usecases.stock
 
+import com.example.warehouse.application.auth.SecUtils
 import com.example.warehouse.application.dto.stock.InboundStockRequest
+import com.example.warehouse.application.ports.ProductRepositoryPort
+import com.example.warehouse.application.ports.StockBalanceRepositoryPort
+import com.example.warehouse.application.ports.StockMovementRepositoryPort
+import com.example.warehouse.application.ports.WarehouseRepositoryPort
 import com.example.warehouse.domain.entities.stockmovement.StockMovementEntity
 import com.example.warehouse.domain.enums.MovementType
 import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.ProductRepository
 import com.example.warehouse.infrastructure.repositories.StockBalanceRepository
 import com.example.warehouse.infrastructure.repositories.StockMovementRepository
+import com.example.warehouse.infrastructure.repositories.UserRepository
 import com.example.warehouse.infrastructure.repositories.WarehouseRepository
 import jakarta.validation.Valid
 import org.springframework.stereotype.Service
@@ -15,19 +21,26 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class InboundStock(
-    private val productRepository: ProductRepository,
-    private val warehouseRepository: WarehouseRepository,
-    private val stockBalanceRepository: StockBalanceRepository,
-    private val stockMovementRepository: StockMovementRepository
+    private val productRepository: ProductRepositoryPort,
+    private val warehouseRepository: WarehouseRepositoryPort,
+    private val stockBalanceRepository: StockBalanceRepositoryPort,
+    private val stockMovementRepository: StockMovementRepositoryPort,
+    private val userRepository: UserRepository
 ) {
 
     @Transactional
     fun execute(@Valid @RequestBody request: InboundStockRequest) {
+
+        val email = SecUtils.getCurrentUserEmail()
+
+        val user = userRepository.findByEmail(email)
+            ?: throw NotFoundException("User not found")
+
         val product = productRepository.findById(request.productId)
-            .orElseThrow { NotFoundException("Product not found") }
+            ?: throw NotFoundException("Product not found")
 
         val warehouse = warehouseRepository.findById(request.warehouseId)
-            .orElseThrow { NotFoundException("Warehouse not found") }
+            ?: throw NotFoundException("Warehouse not found")
 
         val balance = stockBalanceRepository.getOrCreate(product, warehouse)
 
@@ -41,7 +54,8 @@ class InboundStock(
                 toWarehouse = warehouse,
                 quantity = request.quantity,
                 type = MovementType.INBOUND,
-                reason = request.reason
+                reason = request.reason,
+                createdBy = user
             )
         )
     }

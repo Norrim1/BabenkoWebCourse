@@ -2,6 +2,7 @@ package com.example.warehouse.application.usecases.supplier
 
 import com.example.warehouse.application.dto.supplier.CreateSupplierRequest
 import com.example.warehouse.application.dto.supplier.SupplierDto
+import com.example.warehouse.application.ports.SupplierRepositoryPort
 import com.example.warehouse.domain.entities.supplier.SupplierEntity
 import com.example.warehouse.infrastructure.repositories.SupplierRepository
 import jakarta.validation.Valid
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class CreateSupplier(
-    private val supplierRepository: SupplierRepository
+    private val supplierRepository: SupplierRepositoryPort
 ) {
 
     fun execute(@Valid @RequestBody request: CreateSupplierRequest): SupplierDto {

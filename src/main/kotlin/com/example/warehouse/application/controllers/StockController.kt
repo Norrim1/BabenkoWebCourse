@@ -26,7 +26,7 @@ class StockController(
 ) {
 
     @GetMapping("/balances")
-    fun getBalances(@RequestParam warehouseId: UUID): List<StockBalanceDto> {
+    fun getBalances(@RequestParam warehouseId: Long): List<StockBalanceDto> {
         return getStockBalancesUseCase.execute(warehouseId)
     }
     @PostMapping("/inbound")

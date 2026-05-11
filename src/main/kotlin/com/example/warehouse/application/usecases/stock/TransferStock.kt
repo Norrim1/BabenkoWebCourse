@@ -1,6 +1,11 @@
 package com.example.warehouse.application.usecases.stock
 
+import com.example.warehouse.application.auth.SecUtils
 import com.example.warehouse.application.dto.stock.TransferStockRequest
+import com.example.warehouse.application.ports.ProductRepositoryPort
+import com.example.warehouse.application.ports.StockBalanceRepositoryPort
+import com.example.warehouse.application.ports.StockMovementRepositoryPort
+import com.example.warehouse.application.ports.WarehouseRepositoryPort
 import com.example.warehouse.domain.entities.stockmovement.StockMovementEntity
 import com.example.warehouse.domain.enums.MovementType
 import com.example.warehouse.domain.exceptions.ConflictException
@@ -8,18 +13,20 @@ import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.ProductRepository
 import com.example.warehouse.infrastructure.repositories.StockBalanceRepository
 import com.example.warehouse.infrastructure.repositories.StockMovementRepository
+import com.example.warehouse.infrastructure.repositories.UserRepository
 import com.example.warehouse.infrastructure.repositories.WarehouseRepository
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestBody
+import java.util.Date
 
 @Service
 class TransferStock(
-    private val productRepository: ProductRepository,
-    private val warehouseRepository: WarehouseRepository,
-    private val stockBalanceRepository: StockBalanceRepository,
-    private val stockMovementRepository: StockMovementRepository
+    private val productRepository: ProductRepositoryPort,
+    private val warehouseRepository: WarehouseRepositoryPort,
+    private val stockBalanceRepository: StockBalanceRepositoryPort,
+    private val stockMovementRepository: StockMovementRepositoryPort, private val userRepository: UserRepository
 ) {
 
     @Transactional
@@ -28,14 +35,19 @@ class TransferStock(
             throw ConflictException("Warehouses must be different")
         }
 
+        val email = SecUtils.getCurrentUserEmail()
+
+        val user = userRepository.findByEmail(email)
+            ?: throw NotFoundException("User not found")
+
         val product = productRepository.findById(request.productId)
-            .orElseThrow { NotFoundException("Product not found") }
+            ?: throw NotFoundException("Product not found")
 
         val fromWarehouse = warehouseRepository.findById(request.fromWarehouseId)
-            .orElseThrow { NotFoundException("From warehouse not found") }
+            ?: throw NotFoundException("From warehouse not found")
 
         val toWarehouse = warehouseRepository.findById(request.toWarehouseId)
-            .orElseThrow { NotFoundException("To warehouse not found") }
+            ?: throw NotFoundException("To warehouse not found")
 
         val fromBalance = stockBalanceRepository.getOrCreate(product, fromWarehouse)
         val toBalance = stockBalanceRepository.getOrCreate(product, toWarehouse)
@@ -51,7 +63,9 @@ class TransferStock(
                 toWarehouse = toWarehouse,
                 quantity = request.quantity,
                 type = MovementType.TRANSFER,
-                reason = request.reason
+                reason = request.reason,
+                createdBy = user,
+                createdAt = Date()
             )
         )
     }

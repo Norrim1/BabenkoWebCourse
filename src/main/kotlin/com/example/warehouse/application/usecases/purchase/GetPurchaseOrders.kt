@@ -2,12 +2,13 @@ package com.example.warehouse.application.usecases.purchase
 
 import com.example.warehouse.application.dto.purchaseorder.PurchaseOrderDto
 import com.example.warehouse.application.dto.purchaseorderitem.PurchaseOrderItemDto
+import com.example.warehouse.application.ports.PurchaseOrderRepositoryPort
 import com.example.warehouse.infrastructure.repositories.PurchaseOrderRepository
 import org.springframework.stereotype.Service
 
 @Service
 class GetPurchaseOrders(
-    private val purchaseOrderRepository: PurchaseOrderRepository
+    private val purchaseOrderRepository: PurchaseOrderRepositoryPort
 ) {
 
     fun execute(): List<PurchaseOrderDto> {

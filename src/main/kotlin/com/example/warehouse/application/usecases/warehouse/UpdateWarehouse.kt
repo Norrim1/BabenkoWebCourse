@@ -2,17 +2,20 @@ package com.example.warehouse.application.usecases.warehouse
 
 import com.example.warehouse.application.dto.warehouse.UpdateWarehouseRequest
 import com.example.warehouse.application.dto.warehouse.WarehouseDto
+import com.example.warehouse.application.ports.ProductRepositoryPort
+import com.example.warehouse.application.ports.WarehouseRepositoryPort
+import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.WarehouseRepository
 import org.springframework.stereotype.Service
 
 @Service
 class UpdateWarehouse(
-    private val warehouseRepository: WarehouseRepository
+    private val warehouseRepository: WarehouseRepositoryPort
 ) {
 
     fun execute(id: Long, request: UpdateWarehouseRequest): WarehouseDto {
         val warehouse = warehouseRepository.findById(id)
-            .orElseThrow { RuntimeException("Warehouse not found") }
+            ?: throw RuntimeException("Warehouse not found")
 
         warehouse.name = request.name
 

@@ -1,5 +1,7 @@
 package com.example.warehouse.application.usecases.product
 
+import com.example.warehouse.application.ports.ProductRepositoryPort
+import com.example.warehouse.application.ports.StockBalanceRepositoryPort
 import com.example.warehouse.domain.exceptions.ConflictException
 import com.example.warehouse.infrastructure.repositories.ProductRepository
 import com.example.warehouse.infrastructure.repositories.StockBalanceRepository
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class DeleteProduct(
-    private val productRepository: ProductRepository,
-    private val stockBalanceRepository: StockBalanceRepository
+    private val productRepository: ProductRepositoryPort,
+    private val stockBalanceRepository: StockBalanceRepositoryPort
 ) {
 
     fun execute(id: Long) {
