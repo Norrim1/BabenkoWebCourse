@@ -1,5 +1,6 @@
 package com.example.warehouse.application.auth
 
+import com.example.warehouse.application.ports.UserRepositoryPort
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,7 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtService: JwtService,
-    private val userDetailsService: CustomUserDetailsService
+    private val userRepositoryPort: UserRepositoryPort,
+    private val authenticationEntryPoint: CustomAuthEntryPoint,
+    private val accessDeniedHandler: CustomAccessDenied
 ) {
 
     @Bean
@@ -28,25 +31,30 @@ class SecurityConfig(
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
+            .exceptionHandling {
+                it.authenticationEntryPoint(authenticationEntryPoint)
+                it.accessDeniedHandler(accessDeniedHandler)
+            }
             .authorizeHttpRequests {
                 it.requestMatchers(
                     "/swagger-ui/**",
                     "/swagger-ui.html",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/actuator/**"
                 ).permitAll()
 
-                it.requestMatchers("/auth/**").permitAll()
+                it.requestMatchers("/auth/**")
+                    .permitAll()
 
-                it.requestMatchers("/stock/**")
-                    .hasRole("WAREHOUSE_OPERATOR")
-
-                it.requestMatchers("/suppliers/**", "/purchase-orders/**")
-                    .hasRole("PROCUREMENT_MANAGER")
+                it.requestMatchers(
+                    "/suppliers/**",
+                    "/purchase-orders/**"
+                ).hasRole("PROCUREMENT_MANAGER")
 
                 it.anyRequest().authenticated()
             }
             .addFilterBefore(
-                JwtFilter(jwtService),
+                JwtFilter(jwtService, userRepositoryPort),
                 UsernamePasswordAuthenticationFilter::class.java
             )
             .build()

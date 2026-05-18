@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class GetStockMovement(
-    private val repository: StockMovementRepositoryPort,
-    private val userRepository: UserRepository
+    private val repository: StockMovementRepositoryPort
 ) {
 
     fun execute(): List<StockMovementDto> {

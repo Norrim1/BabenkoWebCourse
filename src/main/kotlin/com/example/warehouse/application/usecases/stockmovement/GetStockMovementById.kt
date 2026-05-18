@@ -1,6 +1,5 @@
 package com.example.warehouse.application.usecases.stockmovement
 
-import com.example.warehouse.application.auth.SecUtils
 import com.example.warehouse.application.dto.stockmovement.StockMovementDto
 import com.example.warehouse.application.ports.StockMovementRepositoryPort
 import com.example.warehouse.domain.exceptions.NotFoundException

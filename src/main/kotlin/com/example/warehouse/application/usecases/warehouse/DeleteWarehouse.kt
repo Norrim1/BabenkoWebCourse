@@ -1,8 +1,10 @@
 package com.example.warehouse.application.usecases.warehouse
 
 import com.example.warehouse.application.ports.StockBalanceRepositoryPort
+import com.example.warehouse.application.ports.SupplierRepositoryPort
 import com.example.warehouse.application.ports.WarehouseRepositoryPort
 import com.example.warehouse.domain.exceptions.ConflictException
+import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.StockBalanceRepository
 import com.example.warehouse.infrastructure.repositories.WarehouseRepository
 import org.springframework.stereotype.Service
@@ -16,6 +18,9 @@ class DeleteWarehouse(
     fun execute(id: Long) {
         val hasStock = stockBalanceRepository.findAll()
             .any { it.warehouse.id == id }
+
+        warehouseRepository.findById(id)
+            ?: throw NotFoundException("Movement not found")
 
         if (hasStock) {
             throw ConflictException("Cannot delete warehouse with stock")

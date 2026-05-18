@@ -1,12 +1,12 @@
 package com.example.warehouse.application.usecases.stock
 
-import com.example.warehouse.application.auth.SecUtils
 import com.example.warehouse.application.dto.stock.OutboundStockRequest
 import com.example.warehouse.application.ports.ProductRepositoryPort
 import com.example.warehouse.application.ports.StockBalanceRepositoryPort
 import com.example.warehouse.application.ports.StockMovementRepositoryPort
 import com.example.warehouse.application.ports.WarehouseRepositoryPort
 import com.example.warehouse.domain.entities.stockmovement.StockMovementEntity
+import com.example.warehouse.domain.entities.user.UserEntity
 import com.example.warehouse.domain.enums.MovementType
 import com.example.warehouse.domain.exceptions.NotFoundException
 import com.example.warehouse.infrastructure.repositories.ProductRepository
@@ -25,17 +25,10 @@ class OutboundStock(
     private val warehouseRepository: WarehouseRepositoryPort,
     private val stockBalanceRepository: StockBalanceRepositoryPort,
     private val stockMovementRepository: StockMovementRepositoryPort,
-    private val userRepository: UserRepository
 ) {
 
     @Transactional
-    fun execute(@Valid @RequestBody request: OutboundStockRequest) {
-
-        val email = SecUtils.getCurrentUserEmail()
-
-        val user = userRepository.findByEmail(email)
-            ?: throw NotFoundException("User not found")
-
+    fun execute(@Valid @RequestBody request: OutboundStockRequest, userDetails: UserEntity) {
         val product = productRepository.findById(request.productId)
             ?: throw NotFoundException("Product not found")
 
@@ -55,7 +48,7 @@ class OutboundStock(
                 quantity = request.quantity,
                 type = MovementType.OUTBOUND,
                 reason = request.reason,
-                createdBy = user
+                createdBy = userDetails
             )
         )
     }

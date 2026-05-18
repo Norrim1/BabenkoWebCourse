@@ -6,6 +6,7 @@ import com.example.warehouse.domain.exceptions.BadRequestException
 import com.example.warehouse.domain.exceptions.ConflictException
 import com.example.warehouse.domain.exceptions.NotFoundException
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime

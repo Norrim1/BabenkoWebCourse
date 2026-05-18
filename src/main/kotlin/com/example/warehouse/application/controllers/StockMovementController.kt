@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController
 class StockMovementController(
 
     private val getAllUseCase: GetStockMovement,
-
     private val getByIdUseCase: GetStockMovementById
 ) {
 

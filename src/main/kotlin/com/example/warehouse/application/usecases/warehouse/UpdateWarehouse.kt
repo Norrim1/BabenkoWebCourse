@@ -15,7 +15,7 @@ class UpdateWarehouse(
 
     fun execute(id: Long, request: UpdateWarehouseRequest): WarehouseDto {
         val warehouse = warehouseRepository.findById(id)
-            ?: throw RuntimeException("Warehouse not found")
+            ?: throw NotFoundException("Warehouse not found")
 
         warehouse.name = request.name
 

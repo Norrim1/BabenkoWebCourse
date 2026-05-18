@@ -16,4 +16,21 @@ spring:
       - classpath:/db/migration
   jwt:
     secret: ${JWT_SECRET:my-super-secret-key-my-super-secret-key}
-    expiration-ms: ${JWT_EXP  IRATION:86400000}
+    expiration-ms: ${JWT_EXPIRATION:86400000}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+    cache:
+      type: redis
+      redis:
+        time-to-live: 300000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+  endpoint:
+    health:
+      show-details: always
