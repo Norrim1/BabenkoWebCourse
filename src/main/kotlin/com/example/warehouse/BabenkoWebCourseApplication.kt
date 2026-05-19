@@ -6,8 +6,8 @@ import org.springframework.cache.annotation.EnableCaching
 
 @SpringBootApplication
 @EnableCaching
-class BabenkoWebCourseApplication
+class WarehouseApplication
 
 fun main(args: Array<String>) {
-    runApplication<BabenkoWebCourseApplication>(*args)
+    runApplication<WarehouseApplication>(*args)
 }

@@ -57,6 +57,7 @@ class SecurityConfig(
                 JwtFilter(jwtService, userRepositoryPort),
                 UsernamePasswordAuthenticationFilter::class.java
             )
+            .cors { }
             .build()
     }
 

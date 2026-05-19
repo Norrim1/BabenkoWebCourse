@@ -1,22 +1,18 @@
 package com.example.warehouse.application.controllers
 
-import com.example.warehouse.application.dto.stockmovement.StockMovementDto
 import com.example.warehouse.application.dto.warehouse.CreateWarehouseRequest
 import com.example.warehouse.application.dto.warehouse.UpdateWarehouseRequest
 import com.example.warehouse.application.dto.warehouse.WarehouseDto
-import com.example.warehouse.application.usecases.stockmovement.GetStockMovementById
-import com.example.warehouse.application.usecases.warehouse.CreateWarehouse
-import com.example.warehouse.application.usecases.warehouse.DeleteWarehouse
-import com.example.warehouse.application.usecases.warehouse.GetWarehouse
-import com.example.warehouse.application.usecases.warehouse.GetWarehouseById
-import com.example.warehouse.application.usecases.warehouse.UpdateWarehouse
-import com.example.warehouse.domain.entities.warehouse.WarehouseEntity
+import com.example.warehouse.application.services.warehouse.CreateWarehouse
+import com.example.warehouse.application.services.warehouse.DeleteWarehouse
+import com.example.warehouse.application.services.warehouse.GetWarehouse
+import com.example.warehouse.application.services.warehouse.GetWarehouseById
+import com.example.warehouse.application.services.warehouse.UpdateWarehouse
 import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.status
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

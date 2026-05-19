@@ -15,15 +15,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
-
     private val userRepository: UserRepository,
-
     private val roleRepository: RoleRepository,
-
     private val passwordEncoder: PasswordEncoder,
-
     private val authenticationManager: AuthenticationManager,
-
     private val jwtService: JwtService
 ) {
 

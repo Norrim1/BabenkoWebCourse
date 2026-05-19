@@ -53,7 +53,7 @@ class StockMovementIntegrationTest {
     }
 
     private fun registerAndGetToken(
-        role: String = "WAREHOUSE_OPERATOR"
+        role: String = "ROLE_WAREHOUSE_OPERATOR"
     ): String {
         val answer =
             Given {

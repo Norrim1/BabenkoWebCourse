@@ -23,7 +23,7 @@ import java.util.UUID
         UniqueConstraint(columnNames = ["product_id", "warehouse_id"])
     ]
 )
-open class StockBalanceEntity(
+class StockBalanceEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

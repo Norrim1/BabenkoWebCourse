@@ -15,12 +15,14 @@ spring:
     locations:
       - classpath:/db/migration
   jwt:
-    secret: ${JWT_SECRET:my-super-secret-key-my-super-secret-key}
-    expiration-ms: ${JWT_EXPIRATION:86400000}
+    secret:
+    expiration-ms:
   data:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
     cache:
       type: redis
       redis:

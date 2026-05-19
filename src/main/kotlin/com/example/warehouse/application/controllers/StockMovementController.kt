@@ -1,8 +1,8 @@
 package com.example.warehouse.application.controllers
 
 import com.example.warehouse.application.dto.stockmovement.StockMovementDto
-import com.example.warehouse.application.usecases.stockmovement.GetStockMovement
-import com.example.warehouse.application.usecases.stockmovement.GetStockMovementById
+import com.example.warehouse.application.services.stockmovement.GetStockMovement
+import com.example.warehouse.application.services.stockmovement.GetStockMovementById
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

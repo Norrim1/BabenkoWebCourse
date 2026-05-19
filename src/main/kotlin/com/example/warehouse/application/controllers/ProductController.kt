@@ -3,11 +3,11 @@ package com.example.warehouse.application.controllers
 import com.example.warehouse.application.dto.product.CreateProductRequest
 import com.example.warehouse.application.dto.product.ProductDto
 import com.example.warehouse.application.dto.product.UpdateProductRequest
-import com.example.warehouse.application.usecases.product.CreateProduct
-import com.example.warehouse.application.usecases.product.DeleteProduct
-import com.example.warehouse.application.usecases.product.GetProduct
-import com.example.warehouse.application.usecases.product.GetProductById
-import com.example.warehouse.application.usecases.product.UpdateProduct
+import com.example.warehouse.application.services.product.CreateProduct
+import com.example.warehouse.application.services.product.DeleteProduct
+import com.example.warehouse.application.services.product.GetProduct
+import com.example.warehouse.application.services.product.GetProductById
+import com.example.warehouse.application.services.product.UpdateProduct
 import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable

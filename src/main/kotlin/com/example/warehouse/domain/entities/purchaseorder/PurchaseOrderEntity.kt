@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.util.Date
 import java.util.UUID
 
 @Entity
@@ -35,9 +36,12 @@ class PurchaseOrderEntity(
     var status: PurchaseOrderStatus = PurchaseOrderStatus.CREATED,
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val items: MutableList<PurchaseOrderItemEntity> = mutableListOf()
+    val items: MutableList<PurchaseOrderItemEntity> = mutableListOf(),
+
+    @Column(name = "created_at", nullable = false)
+    val createdAt: Date = Date()
 ) {
-    constructor() : this(null, SupplierEntity(),PurchaseOrderStatus.CREATED,mutableListOf())
+    constructor() : this(null, SupplierEntity(),PurchaseOrderStatus.CREATED,mutableListOf(),Date())
 
     fun addItem(product: ProductEntity, quantity: Int) {
         require(quantity > 0)

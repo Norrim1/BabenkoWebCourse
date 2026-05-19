@@ -50,7 +50,7 @@ class StockBalanceIntegrationTest {
     }
 
     private fun registerAndGetToken(
-        role: String = "WAREHOUSE_OPERATOR"
+        role: String = "ROLE_WAREHOUSE_OPERATOR"
     ): String {
         val answer =
             Given {
@@ -72,10 +72,6 @@ class StockBalanceIntegrationTest {
     }
 
     @Test
-    @WithMockUser(
-        username = "operator",
-        roles = ["WAREHOUSE_OPERATOR"]
-    )
     fun `POST inbound increases stock balance`() {
         val token = registerAndGetToken()
         val warehouseAnswer =
